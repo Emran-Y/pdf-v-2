@@ -2,50 +2,54 @@ const PDFDocument = require('pdfkit');
 const fs = require('fs');
 
 function generatePDF(
-  createdById = 0,
-  assignedToId = 0,
-  status = "",
-  address1 = "",
-  address2 = "",
-  address3 = "",
-  address4 = "",
-  city = "",
-  country = "",
-  postCode = "",
-  noAcPoints = 0,
-  noDcPoints = 0,
-  makeOfChargePoint = "",
-  ampsPerCp = "",
-  kwPerCp = "",
-  wallMountSingle = 0,
-  wallMountDual = 0,
-  floorMountSingle = 0,
-  floorMountDual = 0,
-  phaseType = "",
-  mainsFuseSize = "",
-  mainsIsolation = "",
-  earthingSetup = "",
-  mobileSignal = "",
-  signalStrength = "",
-  consumerUnitMake = "",
-  consumerUnitModel = "",
-  totalSpareWays = "",
-  totalAmpsInUse = "",
-  cableSizeRead = "",
-  cableLengthTotal = "",
-  totalCableRuns = "",
-  internalCableAttachment = "",
-  dataCableRun = "",
-  cableRunDescription = "",
-  selectOptions = "",
-  gwLength = "",
-  gwWidth = "",
-  gwDepth = "",
-  ductingSize = "",
-  ductingLength = "",
-  groundWorksDescription = "",
-  installationEarthingSetup = "",
-  imagePath = 'car.jpg'
+
+  {
+    createdById = 0,
+    assignedToId = 0,
+    status = "",
+    address1 = "",
+    address2 = "",
+    address3 = "",
+    address4 = "",
+    city = "",
+    country = "",
+    postCode = "",
+    noAcPoints = 0,
+    noDcPoints = 0,
+    makeOfChargePoint = "",
+    ampsPerCp = "",
+    kwPerCp = "",
+    wallMountSingle = 0,
+    wallMountDual = 0,
+    floorMountSingle = 0,
+    floorMountDual = 0,
+    phaseType = "",
+    mainsFuseSize = "",
+    mainsIsolation = "",
+    earthingSetup = "",
+    mobileSignal = "",
+    signalStrength = "",
+    consumerUnitMake = "",
+    consumerUnitModel = "",
+    totalSpareWays = "",
+    totalAmpsInUse = "",
+    cableSizeRead = "",
+    cableLengthTotal = "",
+    totalCableRuns = "",
+    internalCableAttachment = "",
+    dataCableRun = "",
+    cableRunDescription = "",
+    selectOptions = "",
+    gwLength = "",
+    gwWidth = "",
+    gwDepth = "",
+    ductingSize = "",
+    ductingLength = "",
+    groundWorksDescription = "",
+    installationEarthingSetup = "",
+    url = ''
+  }
+  
 ) {
   // Create a new PDF document
   const doc = new PDFDocument({
@@ -356,12 +360,12 @@ function generatePDF(
   
 
   // Image 1
-  doc.image(`${imagePath}`, 70, 2750, { width: 230 ,height: 170});
-  doc.image(`${imagePath}`, 320, 2750, { width: 230 ,height: 170});
+  doc.image(`${url}`, 70, 2750, { width: 230 ,height: 170});
+  doc.image(`${url}`, 320, 2750, { width: 230 ,height: 170});
 
   // Image 2
-  doc.image(`${imagePath}`, 70, 2950, { width: 230 ,height: 170});
-  doc.image(`${imagePath}`, 320, 2950, { width: 230 ,height: 170});
+  doc.image(`${url}`, 70, 2950, { width: 230 ,height: 170});
+  doc.image(`${url}`, 320, 2950, { width: 230 ,height: 170});
 
   
   // Finalize the document
@@ -374,4 +378,50 @@ function generatePDF(
 }
 
 // Example usage
-generatePDF('123 Main St', 'Apt 101', '456 Elm St', 'Suite 202', 'New York', 'USA');
+generatePDF(
+  {
+    createdById: 123,
+    assignedToId: 456,
+    status: "Pending",
+    address1: "123 Main St",
+    address2: "Apt 1",
+    city: "Cityville",
+    country: "Countryland",
+    postCode: "12345",
+    noAcPoints: 2,
+    noDcPoints: 4,
+    makeOfChargePoint: "ChargeX",
+    ampsPerCp: "10",
+    kwPerCp: "5",
+    wallMountSingle: 1,
+    wallMountDual: 0,
+    floorMountSingle: 2,
+    floorMountDual: 1,
+    phaseType: "Single-phase",
+    mainsFuseSize: "20A",
+    mainsIsolation: "Switch",
+    earthingSetup: "Grounded",
+    mobileSignal: "Good",
+    signalStrength: "Strong",
+    consumerUnitMake: "UnitX",
+    consumerUnitModel: "ModelY",
+    totalSpareWays: "10",
+    totalAmpsInUse: "40",
+    cableSizeRead: "10mm",
+    cableLengthTotal: "100m",
+    totalCableRuns: "5",
+    internalCableAttachment: "Attached",
+    dataCableRun: "Yes",
+    cableRunDescription: "Description",
+    selectOptions: "OptionX",
+    gwLength: "10m",
+    gwWidth: "5m",
+    gwDepth: "2m",
+    ductingSize: "Large",
+    ductingLength: "50m",
+    groundWorksDescription: "GroundWorks",
+    installationEarthingSetup: "Grounded",
+    url: "car.jpg"
+  }
+);
+
