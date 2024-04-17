@@ -1,7 +1,8 @@
 import PDFDocument from 'pdfkit';
 import axios from 'axios';
 import blobStream from 'blob-stream';
-
+import fs from 'fs';
+import path from 'path';
 
 
 async function downloadImageToBuffer(url) {
@@ -63,7 +64,10 @@ async function generatePDF(
     size: 'A4', // 8.5 x 11 in inches (letter size)
   });
 
-  const stream = doc.pipe(blobStream());
+  // const stream = doc.pipe(blobStream());
+
+  const writableStream = fs.createWriteStream('output.pdf');
+  doc.pipe(writableStream);
 
   // logo image
   const pageWidth = doc.page.width;
@@ -77,11 +81,11 @@ async function generatePDF(
   doc.font('Helvetica-Bold').fontSize(20).text('Address Details', { align: 'center' });
 
   // add Address 1 and Address 2
-  doc.fontSize(13).text('Address 1: (street/road name)', 70, 200).fontSize(13);
+  doc.fontSize(13).font('./fonts/Karla-Bold.ttf').text('Address 1: (street/road name)', 70, 200).fontSize(13);
   doc.fontSize(13).text('Address 2: (street/road name)', 330, 200).fontSize(13);
 
   // Reset font and color for regular text
-  doc.fontSize(12).fillColor('#B0ADAD').font('Helvetica');
+  doc.fontSize(12).fillColor('#B0ADAD').font('./fonts/Karla-Bold.ttf');
 
   // Draw rectangles with rounded corners for the values
   doc.roundedRect(80, 230, 200, 30, 5).fill('#f5f5f3').stroke(); // For Address 1
@@ -391,16 +395,20 @@ async function generatePDF(
   // Finalize the document
   doc.end();
 
-  return new Promise((resolve, reject) => {
-    stream.on('finish', () => {
-      const blob = stream.toBlob('application/pdf'); // Get Blob from blobStream
-      resolve(blob); // Resolve with the Blob
-    });
+  // return new Promise((resolve, reject) => {
+  //   stream.on('finish', () => {
+  //     const blob = stream.toBlob('application/pdf'); // Get Blob from blobStream
+  //     resolve(blob); // Resolve with the Blob
+  //   });
 
-    doc.on('error', (err) => {
-      reject(err); // Reject if there's an error
-    });
+  //   doc.on('error', (err) => {
+  //     reject(err); // Reject if there's an error
+  //   });
+  // });
+  writableStream.on('finish', () => {
+    console.log('PDF generated successfully!');
   });
+
 
 }
 
@@ -448,14 +456,17 @@ generatePDF(
     ductingLength: "50m",
     groundWorksDescription: "GroundWorks",
     installationEarthingSetup: "Grounded",
-    url: "https://via.placeholder.com/150/771796"
+    url: "https://via.placeholder.com/150/d32776"
   }
 )
-.then((blob) => {
-  // Do something with the Blob (e.g., display in browser, download)
-  console.log(blob);
-})
-.catch((err) => {
-  console.error('Error generating PDF:', err);
-});
+// .then((blob) => {
+//   // Do something with the Blob (e.g., display in browser, download)
+//   // Log the Blob object
+//   console.log(blob);
+
+  
+// })
+// .catch((err) => {
+//   console.error('Error generating PDF:', err);
+// });
 
