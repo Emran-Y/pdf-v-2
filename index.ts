@@ -2,67 +2,64 @@ import PDFDocument from 'pdfkit';
 import axios from 'axios';
 import blobStream from 'blob-stream';
 
+interface PDFData {
+  address1: string;
+  address2: string;
+  address3: string;
+  address4: string;
+  city: string;
+  country: string;
+  postCode: string;
+  noAcPoints: number;
+  noDcPoints: number;
+  makeOfChargePoint: string;
+  ampsPerCp: string;
+  kwPerCp: string;
+  wallMountSingle: number;
+  wallMountDual: number;
+  floorMountSingle: number;
+  floorMountDual: number;
+  phaseType: string;
+  mainsFuseSize: string;
+  mainsIsolation: string;
+  earthingSetup: string;
+  mobileSignal: string;
+  signalStrength: string;
+  consumerUnitMake: string;
+  consumerUnitModel: string;
+  totalSpareWays: string;
+  totalAmpsInUse: string;
+  cableSizeRead: string;
+  cableLengthTotal: string;
+  totalCableRuns: string;
+  internalCableAttachment: string;
+  dataCableRun: string;
+  cableRunDescription: string;
+  selectOptions: string;
+  gwLength: string;
+  gwWidth: string;
+  gwDepth: string;
+  ductingSize: string;
+  ductingLength: string;
+  groundWorksDescription: string;
+  installationEarthingSetup: string;
+  url: string;
+}
 
-
-async function downloadImageToBuffer(url) {
+async function downloadImageToBuffer(url: string): Promise<Buffer> {
   const response = await axios.get(url, { responseType: 'arraybuffer' });
   return Buffer.from(response.data, 'binary');
 }
 
 
 
-async function generatePDF(
-
-  {
-    address1 = "",
-    address2 = "",
-    address3 = "",
-    address4 = "",
-    city = "",
-    country = "",
-    postCode = "",
-    noAcPoints = 0,
-    noDcPoints = 0,
-    makeOfChargePoint = "",
-    ampsPerCp = "",
-    kwPerCp = "",
-    wallMountSingle = 0,
-    wallMountDual = 0,
-    floorMountSingle = 0,
-    floorMountDual = 0,
-    phaseType = "",
-    mainsFuseSize = "",
-    mainsIsolation = "",
-    earthingSetup = "",
-    mobileSignal = "",
-    signalStrength = "",
-    consumerUnitMake = "",
-    consumerUnitModel = "",
-    totalSpareWays = "",
-    totalAmpsInUse = "",
-    cableSizeRead = "",
-    cableLengthTotal = "",
-    totalCableRuns = "",
-    internalCableAttachment = "",
-    dataCableRun = "",
-    cableRunDescription = "",
-    selectOptions = "",
-    gwLength = "",
-    gwWidth = "",
-    gwDepth = "",
-    ductingSize = "",
-    ductingLength = "",
-    groundWorksDescription = "",
-    installationEarthingSetup = "",
-    url = ''
-  }
-  
-) {
+async function generatePDF({ address1, address2,address3,address4, city, country, postCode, noAcPoints, noDcPoints, makeOfChargePoint, ampsPerCp, kwPerCp, wallMountSingle, wallMountDual, floorMountSingle, floorMountDual, phaseType, mainsFuseSize, mainsIsolation, earthingSetup, mobileSignal, signalStrength, consumerUnitMake, consumerUnitModel, totalSpareWays, totalAmpsInUse, cableSizeRead, cableLengthTotal, totalCableRuns, internalCableAttachment, dataCableRun, cableRunDescription, selectOptions, gwLength, gwWidth, gwDepth, ductingSize, ductingLength, groundWorksDescription, installationEarthingSetup, url }: PDFData) {
   // Create a new PDF document
   const doc = new PDFDocument({
     size: 'A4', // 8.5 x 11 in inches (letter size)
   });
 
+  // Pipe the PDF output to a writable stream (in this case, a file)
   const stream = doc.pipe(blobStream());
 
   // logo image
@@ -405,13 +402,11 @@ async function generatePDF(
 }
 
 // Example usage
-generatePDF(
-  {
-    createdById: 123,
-    assignedToId: 456,
-    status: "Pending",
+generatePDF({
     address1: "123 Main St",
     address2: "Apt 1",
+    address3: "Some Address",
+    address4: "Another Address",
     city: "Cityville",
     country: "Countryland",
     postCode: "12345",
@@ -449,13 +444,12 @@ generatePDF(
     groundWorksDescription: "GroundWorks",
     installationEarthingSetup: "Grounded",
     url: "https://via.placeholder.com/150/771796"
-  }
-)
-.then((blob) => {
-  // Do something with the Blob (e.g., display in browser, download)
-  console.log(blob);
-})
-.catch((err) => {
-  console.error('Error generating PDF:', err);
-});
+  })
 
+  .then((blob) => {
+    // Do something with the Blob (e.g., display in browser, download)
+    console.log(blob);
+  })
+  .catch((err) => {
+    console.error('Error generating PDF:', err);
+  });
